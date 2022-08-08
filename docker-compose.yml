@@ -1,0 +1,14 @@
+version: "3.9" # docker-compose version
+
+services:
+  app: # Name of our service
+    build:
+      context: . # User the current directory to build
+      args:
+        - DEV=true # It means we're using this docker-compose for development
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app # Volume sync docker container with local machine
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
