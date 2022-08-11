@@ -3,7 +3,7 @@ version: "3.9" # docker-compose version
 services:
   app: # Name of our service
     build:
-      context: . # User the current directory to build
+      context: . # Use the current directory to build
       args:
         - DEV=true # It means we're using this docker-compose for development
     ports:
@@ -12,3 +12,24 @@ services:
       - ./app:/app # Volume sync docker container with local machine
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db # Name of the database service
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASSWORD=changeme
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    environment:
+    # Set initial database configuration fro new db service
+    # This only used in development in local machine
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+
+volumes:
+  dev-db-data:
