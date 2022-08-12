@@ -11,7 +11,7 @@ services:
     volumes:
       - ./app:/app # Volume sync docker container with local machine
     command: >
-      sh -c "python manage.py wait_for_db && 
+      sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     environment:
@@ -21,14 +21,14 @@ services:
       - DB_PASS=changeme
     depends_on:
       - db
-  
+
   db:
     image: postgres:13-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data
     environment:
-    # Set initial database configuration fro new db service
-    # This only used in development in local machine
+      # Set initial database configuration fro new db service
+      # This only used in development in local machine
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
